@@ -1,17 +1,47 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+
+// REDUX START
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+
+const globalState = {
+  order: 0,
+};
+
+// Reducer
+const rootReducer = (state = globalState, action) => {
+  if (action.type === 'PLUS_ORDER') {
+    return {
+      ...state,
+      order: state.order + 1,
+    };
+  }
+  if (action.type === 'MINUS_ORDER') {
+    const order = 0;
+    if (state.order > 0) {
+      return {
+        ...state,
+        order: state.order - 1,
+      };
+    }
+    return {
+      ...state,
+      order: order,
+    };
+  }
+  return state;
+};
+
+// Store
+const store = createStore(rootReducer);
+
+// REDUX END
 
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <App />
-  </React.StrictMode>,
+  </Provider>,
   document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
